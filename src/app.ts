@@ -14,9 +14,51 @@ enum Category {
   Angular
 }
 
+//Task 07
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  category: Category;
+  available: boolean;
+  pages?: number;
+  // markDamaged?: (reason: string) => void;
+  markDamaged?: DamageLogger;
+}
+
+//Task 08
+interface DamageLogger {
+  (reason: string): void;
+}
+
+//Task 09
+interface Person {
+  name: string;
+  email: string;
+}
+
+interface Author extends Person {
+  numBooksPublished: number;
+}
+
+interface Librarian extends Person {
+  department: string;
+  assistCustomer(custName: string): void;
+}
+
+//Task 10
+class UniversityLibrarian implements Librarian {
+  name: string;
+  email: string; //'UniversityLibrarian@email.com'
+  department: string; //'Science'
+  assistCustomer = (custName: string) => {
+    console.log(`${this.name} is assisting to ${custName}`);
+  }
+}
+
 // Task 01
-function getAllBooks(): any[] {
-  let allBooks: any[] = [
+function getAllBooks(): Book[] {
+  let allBooks: Book[] = [
     {
       id: 1,
       title: "Refactoring JavaScript",
@@ -49,9 +91,9 @@ function getAllBooks(): any[] {
   return allBooks;
 }
 
-function logFirstAvailable(books: any[] = getAllBooks()): void {
+function logFirstAvailable(books: Book[] = getAllBooks()): void {
   const amount: number = books.length;
-  let firstAvailableBook: any;
+  let firstAvailableBook: Book;
 
   for (let book of books) {
     if (book.available) {
@@ -81,7 +123,7 @@ function logBookTitles(titles: string[]): void {
 }
 
 //Task 03
-function getBookByID(id: number): any {
+function getBookByID(id: number): Book | undefined {
   const allBooks = getAllBooks();
   return allBooks.find(book => book.id === id);
 }
@@ -138,24 +180,53 @@ function getTitles(parameter: string | boolean): string[] {
   return bookTitles;
 }
 
+//Task 07
+function printBook(book: Book): void {
+  console.log(`Prinded book: ${book.title} by ${book.author}`);
+}
 
-//Task 05
-createCustomer('Ann');
-createCustomer('Mary', 28);
-createCustomer('Nick', 34, 'London');
+//Task 07
+const myBook: Book = {
+  id: 5,
+  title: 'Colors, Backgrounds, and Gradients',
+  author: 'Eric A. Meyer',
+  available: true,
+  category: Category.CSS,
+  // year: 2015,
+  // copies: 3,
+  pages: 200,
+  markDamaged: (reason: string) => console.log(`Damaged because of ${reason}`)
+};
+printBook(myBook);
+myBook.markDamaged('missing back cover');
 
-const booksJSCategory: string[] = getBookTitlesByCategory();
-logBookTitles(booksJSCategory);
+//Task 08
+const logDamage: DamageLogger = (reason: string) => console.log(`Logging damage reason: ${reason}`);
+logDamage('UFO attack');
 
-logFirstAvailable();
+//Task 09
+let favoriteAuthor: Author = {
+  name: 'Vasya Pupkin',
+  email: 'vasyapupkin@email.com',
+  numBooksPublished: 4
+}
 
-let myBooks = сheckoutBooks('Ann', 1, 2, 4);
-myBooks.forEach(book => console.log(`Available book: ${book}`));
+let favoriteLibrarian: Librarian = {
+  name: 'Peter',
+  email: 'peter_librarian@email.com',
+  assistCustomer(custName) {
+    console.log(`favoriteLibrarian asisting to ${custName}`);
+  },
+  department: 'Univercity'
+}
 
-//Task 06
-let checkedOutBooks = getTitles(true);
-checkedOutBooks.forEach(book => console.log(`Books, checked by available=true: ${book}`));
-console.log('__________________________________________________________________________');
-checkedOutBooks = getTitles('Evan Burchard');
-checkedOutBooks.forEach(book => console.log(`Books, checked by author Evan Burchard: ${book}`));
+favoriteLibrarian.assistCustomer('Ann');
 
+//Task 10
+let universityLibrarian: Librarian = new UniversityLibrarian();
+universityLibrarian.name = 'Oleg';
+universityLibrarian.assistCustomer('Ann');
+
+favoriteLibrarian = universityLibrarian;
+favoriteLibrarian.name = 'Fedor';
+favoriteLibrarian.assistCustomer('Mike');
