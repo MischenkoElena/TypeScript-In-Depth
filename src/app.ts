@@ -51,8 +51,55 @@ class UniversityLibrarian implements Librarian {
   name: string;
   email: string; //'UniversityLibrarian@email.com'
   department: string; //'Science'
-  assistCustomer = (custName: string) => {
+  assistCustomer(custName: string): void {
     console.log(`${this.name} is assisting to ${custName}`);
+  }
+}
+
+//Task 11
+abstract class ReferenceItem {
+  // constructor(newTitle: string, newYear: number) {
+  //   console.log('Creating a new ReferenceItem...');
+  //   this.title = newTitle;
+  //   this.year = newYear;
+  // }
+  // title: string;
+  // year: number;
+
+  constructor(public title: string, protected year: number) {
+    console.log('Creating a new ReferenceItem...');
+  }
+
+  private _publisher: string;
+  get publisher(): string {
+    return this._publisher.toUpperCase();
+  }
+  set publisher(newPublisher: string) {
+    this._publisher = newPublisher;
+  }
+
+  static department: string = 'Biology';
+
+  printItem(): void {
+    console.log(`${this.title} (${ReferenceItem.department} department) was published in ${this.year}`);
+  }
+
+  abstract printCitation(): void;
+}
+
+//Task 12
+class Encyclopedia extends ReferenceItem {
+  constructor(title: string, year: number, public edition: string) {
+    super(title, year);
+  }
+
+  printItem(): void {
+    super.printItem();
+    console.log(`Edition: ${this.edition} (${this.year})`);
+  }
+
+  printCitation(): void {
+    console.log(`Citation: ${this.title} - ${this.year}`);
   }
 }
 
@@ -185,48 +232,15 @@ function printBook(book: Book): void {
   console.log(`Prinded book: ${book.title} by ${book.author}`);
 }
 
-//Task 07
-const myBook: Book = {
-  id: 5,
-  title: 'Colors, Backgrounds, and Gradients',
-  author: 'Eric A. Meyer',
-  available: true,
-  category: Category.CSS,
-  // year: 2015,
-  // copies: 3,
-  pages: 200,
-  markDamaged: (reason: string) => console.log(`Damaged because of ${reason}`)
-};
-printBook(myBook);
-myBook.markDamaged('missing back cover');
+//Task 11
+// const ref = new ReferenceItem('Test book', 1986);
+// ref.printItem();
+// ref.publisher = 'The Best Publisher';
+// console.log(`Publisher is: ${ref.publisher}`);
 
-//Task 08
-const logDamage: DamageLogger = (reason: string) => console.log(`Logging damage reason: ${reason}`);
-logDamage('UFO attack');
+//Task 12 
+const refBook = new Encyclopedia('Big ecyclopedia', 1960, 'third');
+refBook.printItem();
 
-//Task 09
-let favoriteAuthor: Author = {
-  name: 'Vasya Pupkin',
-  email: 'vasyapupkin@email.com',
-  numBooksPublished: 4
-}
-
-let favoriteLibrarian: Librarian = {
-  name: 'Peter',
-  email: 'peter_librarian@email.com',
-  assistCustomer(custName) {
-    console.log(`favoriteLibrarian asisting to ${custName}`);
-  },
-  department: 'Univercity'
-}
-
-favoriteLibrarian.assistCustomer('Ann');
-
-//Task 10
-let universityLibrarian: Librarian = new UniversityLibrarian();
-universityLibrarian.name = 'Oleg';
-universityLibrarian.assistCustomer('Ann');
-
-favoriteLibrarian = universityLibrarian;
-favoriteLibrarian.name = 'Fedor';
-favoriteLibrarian.assistCustomer('Mike');
+//Task 13
+refBook.printCitation();
