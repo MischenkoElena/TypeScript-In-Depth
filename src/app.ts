@@ -1,3 +1,7 @@
+import * as Interfaces from "./intefaces";
+import { Category } from "./enums";
+import * as Classes from "./classes";
+
 showHello("greeting", "TypeScript");
 
 function showHello(divName: string, name: string) {
@@ -5,107 +9,9 @@ function showHello(divName: string, name: string) {
   elt.innerText = `Hello from ${name}`;
 }
 
-// Task 02
-enum Category {
-  JavaScript,
-  CSS,
-  HTML,
-  TypeScript,
-  Angular
-}
-
-//Task 07
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  category: Category;
-  available: boolean;
-  pages?: number;
-  // markDamaged?: (reason: string) => void;
-  markDamaged?: DamageLogger;
-}
-
-//Task 08
-interface DamageLogger {
-  (reason: string): void;
-}
-
-//Task 09
-interface Person {
-  name: string;
-  email: string;
-}
-
-interface Author extends Person {
-  numBooksPublished: number;
-}
-
-interface Librarian extends Person {
-  department: string;
-  assistCustomer(custName: string): void;
-}
-
-//Task 10
-class UniversityLibrarian implements Librarian {
-  name: string;
-  email: string; //'UniversityLibrarian@email.com'
-  department: string; //'Science'
-  assistCustomer(custName: string): void {
-    console.log(`${this.name} is assisting to ${custName}`);
-  }
-}
-
-//Task 11
-abstract class ReferenceItem {
-  // constructor(newTitle: string, newYear: number) {
-  //   console.log('Creating a new ReferenceItem...');
-  //   this.title = newTitle;
-  //   this.year = newYear;
-  // }
-  // title: string;
-  // year: number;
-
-  constructor(public title: string, protected year: number) {
-    console.log('Creating a new ReferenceItem...');
-  }
-
-  private _publisher: string;
-  get publisher(): string {
-    return this._publisher.toUpperCase();
-  }
-  set publisher(newPublisher: string) {
-    this._publisher = newPublisher;
-  }
-
-  static department: string = 'Biology';
-
-  printItem(): void {
-    console.log(`${this.title} (${ReferenceItem.department} department) was published in ${this.year}`);
-  }
-
-  abstract printCitation(): void;
-}
-
-//Task 12
-class Encyclopedia extends ReferenceItem {
-  constructor(title: string, year: number, public edition: string) {
-    super(title, year);
-  }
-
-  printItem(): void {
-    super.printItem();
-    console.log(`Edition: ${this.edition} (${this.year})`);
-  }
-
-  printCitation(): void {
-    console.log(`Citation: ${this.title} - ${this.year}`);
-  }
-}
-
 // Task 01
-function getAllBooks(): Book[] {
-  let allBooks: Book[] = [
+function getAllBooks(): Interfaces.Book[] {
+  let allBooks: Interfaces.Book[] = [
     {
       id: 1,
       title: "Refactoring JavaScript",
@@ -138,9 +44,9 @@ function getAllBooks(): Book[] {
   return allBooks;
 }
 
-function logFirstAvailable(books: Book[] = getAllBooks()): void {
+function logFirstAvailable(books: Interfaces.Book[] = getAllBooks()): void {
   const amount: number = books.length;
-  let firstAvailableBook: Book;
+  let firstAvailableBook: Interfaces.Book;
 
   for (let book of books) {
     if (book.available) {
@@ -170,7 +76,7 @@ function logBookTitles(titles: string[]): void {
 }
 
 //Task 03
-function getBookByID(id: number): Book | undefined {
+function getBookByID(id: number): Interfaces.Book | undefined {
   const allBooks = getAllBooks();
   return allBooks.find(book => book.id === id);
 }
@@ -228,7 +134,7 @@ function getTitles(parameter: string | boolean): string[] {
 }
 
 //Task 07
-function printBook(book: Book): void {
+function printBook(book: Interfaces.Book): void {
   console.log(`Prinded book: ${book.title} by ${book.author}`);
 }
 
@@ -239,7 +145,7 @@ function printBook(book: Book): void {
 // console.log(`Publisher is: ${ref.publisher}`);
 
 //Task 12 
-const refBook = new Encyclopedia('Big ecyclopedia', 1960, 'third');
+const refBook = new Classes.RefBook('Big ecyclopedia', 1960, 'third');
 refBook.printItem();
 
 //Task 13
