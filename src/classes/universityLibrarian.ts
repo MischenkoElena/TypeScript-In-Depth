@@ -1,6 +1,9 @@
 import * as interfaces from "../intefaces";
+import { sealed, logger } from "../decorators";
 
-export default class UniversityLibrarian implements interfaces.Librarian {
+@sealed('UniversityLibrarian')
+@logger
+export class UniversityLibrarian implements interfaces.Librarian {
   name: string;
   email: string; //'UniversityLibrarian@email.com'
   department: string; //'Science'

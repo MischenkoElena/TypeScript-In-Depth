@@ -1,6 +1,8 @@
-import * as Interfaces from "./intefaces";
+import { UniversityLibrarian } from './classes/universityLibrarian';
+import { Book, Magazine, Librarian } from "./intefaces";
 import { Category } from "./enums";
-import * as Classes from "./classes";
+import { RefBook, Shelf } from "./classes";
+import { purge } from "./lib/utility-functions";
 
 showHello("greeting", "TypeScript");
 
@@ -10,8 +12,8 @@ function showHello(divName: string, name: string) {
 }
 
 // Task 01
-function getAllBooks(): Interfaces.Book[] {
-  let allBooks: Interfaces.Book[] = [
+function getAllBooks(): Book[] {
+  let allBooks: Book[] = [
     {
       id: 1,
       title: "Refactoring JavaScript",
@@ -44,9 +46,9 @@ function getAllBooks(): Interfaces.Book[] {
   return allBooks;
 }
 
-function logFirstAvailable(books: Interfaces.Book[] = getAllBooks()): void {
+function logFirstAvailable(books: Book[] = getAllBooks()): void {
   const amount: number = books.length;
-  let firstAvailableBook: Interfaces.Book;
+  let firstAvailableBook: Book;
 
   for (let book of books) {
     if (book.available) {
@@ -76,7 +78,7 @@ function logBookTitles(titles: string[]): void {
 }
 
 //Task 03
-function getBookByID(id: number): Interfaces.Book | undefined {
+function getBookByID(id: number): Book | undefined {
   const allBooks = getAllBooks();
   return allBooks.find(book => book.id === id);
 }
@@ -134,19 +136,44 @@ function getTitles(parameter: string | boolean): string[] {
 }
 
 //Task 07
-function printBook(book: Interfaces.Book): void {
+function printBook(book: Book): void {
   console.log(`Prinded book: ${book.title} by ${book.author}`);
 }
 
-//Task 11
-// const ref = new ReferenceItem('Test book', 1986);
-// ref.printItem();
-// ref.publisher = 'The Best Publisher';
-// console.log(`Publisher is: ${ref.publisher}`);
+//Task 18
+const inventory: Array<Book> = [
+  { id: 10, title: 'The C Programming Language', author: 'K & R', available: true, category: Category.Software },
+  { id: 11, title: 'Code Complete', author: 'Steve McConnell', available: true, category: Category.Software },
+  { id: 12, title: '8-Bit Graphics with Cobol', author: 'A. B.', available: true, category: Category.Software },
+  { id: 13, title: 'Cool autoexec.bat Scripts!', author: 'C. D.', available: true, category: Category.Software }
+]; 
+// const purgedArr = purge(inventory);
+// console.log('Purged inventory', purgedArr);
+// const purgedNumberArr = purge([1, 2, 3, 4, 5]);
+// console.log('Purged numbers', purgedNumberArr);
 
-//Task 12 
-const refBook = new Classes.RefBook('Big ecyclopedia', 1960, 'third');
-refBook.printItem();
+//Task 19
+const bookShelf: Shelf<Book> = new Shelf<Book>();
+inventory.forEach(book => bookShelf.add(book));
+console.log(bookShelf.getFirst());
 
-//Task 13
-refBook.printCitation();
+const magazines: Magazine[] = [
+  { title: 'Programming Language Monthly', publisher: 'Code Mags' },
+  { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
+  { title: 'Five Points', publisher: 'GSU' }
+];
+const magazineShelf: Shelf<Magazine> = new Shelf<Magazine>();
+magazines.forEach(magazine => magazineShelf.add(magazine));
+console.log(magazineShelf.getFirst());
+
+//Task 20
+console.log('----- Print all magazines -----');
+magazineShelf.printTitles();
+console.log(magazineShelf.find('Five Points'));
+
+//Task 21
+const fLibrarian = new UniversityLibrarian();
+
+//Task 22
+fLibrarian.name = 'Anna';
+fLibrarian.printLibrarian();
