@@ -3,6 +3,7 @@ import { Book, Magazine, Librarian } from "./intefaces";
 import { Category } from "./enums";
 import { RefBook, Shelf } from "./classes";
 import { purge } from "./lib/utility-functions";
+import { Encyclopedia } from './classes/encyclopedia';
 
 showHello("greeting", "TypeScript");
 
@@ -175,5 +176,35 @@ console.log(magazineShelf.find('Five Points'));
 const fLibrarian = new UniversityLibrarian();
 
 //Task 22
+console.log('--------------- Decorators --------------');
 fLibrarian.name = 'Anna';
-fLibrarian.printLibrarian();
+// fLibrarian.printLibrarian();
+
+//Task 23
+fLibrarian.assistFaculty = () => { console.log('Modified assistFaculty method') };
+fLibrarian.assistFaculty();
+try {
+  fLibrarian.teachCommunity = () => { console.log('Modified teachCommunity method') };
+} catch (error) {
+  // console.log('teachCommunity is not writeable');
+}
+fLibrarian.teachCommunity();
+
+//Task 24
+const encyclopedia = new Encyclopedia('Title for decorator', 1998, 'Edition for decorator');
+encyclopedia.printItem();
+
+//Task 25
+fLibrarian.assistCustomer('Vasilii', 10);
+
+//Task 26
+fLibrarian.name = 'Mark';
+console.log('Formatted librarian name', fLibrarian.name);
+
+//Task 27
+console.log('--------------- Accessor Decorators --------------');
+encyclopedia.copies = -10;
+encyclopedia.copies = 0;
+encyclopedia.copies = 4.5;
+encyclopedia.copies = 10;
+
